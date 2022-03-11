@@ -1,4 +1,6 @@
 const gridCont = document.querySelector(".gridContainer");
+const searchBar = document.querySelector(".searchBar");
+const cardSet = document.querySelectorAll(".cardSet");
 
 const fetchData = () => {
   fetch("https://pokeapi.co/api/v2/pokemon?limit=50&offset=0")
@@ -24,7 +26,7 @@ const pokeCard = (data) => {
 
   const cards = data
     .map((card) => {
-      return `<div class="cardSet">
+      return `<div class="cardSet" id="${card.id}">
          <div class="card"><img src="${
            card.sprites.other.dream_world.front_default
          }" alt="${card.name}"></div>
@@ -40,4 +42,16 @@ const pokeCard = (data) => {
   gridCont.innerHTML = cards;
 };
 
+const filterPoke = () => {
+  const card = document.querySelectorAll(".cardText");
+  card.forEach((pokemon) => {
+    if (!pokemon.innerHTML.includes(searchBar.value.toLowerCase())) {
+      pokemon.parentElement.classList.add("hidden");
+    } else {
+      pokemon.parentElement.classList.remove("hidden");
+    }
+  });
+};
+
+searchBar.addEventListener("keyup", filterPoke);
 fetchData();
